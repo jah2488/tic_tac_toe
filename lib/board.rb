@@ -23,7 +23,7 @@ class Board
   end
 
 
-  def valid_move?(move)
+  def move_available?(move)
    false if move =~ /[a-zA-Z]/
    cell = get_cell(move)
    if cell =~ /\s/

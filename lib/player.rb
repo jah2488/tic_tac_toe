@@ -1,15 +1,18 @@
 class Player
 
-  attr_accessor :type, :human, :color
-
-  def initialize(type,human=true, color="green")
+  attr_accessor :type, :human
+  
+  def initialize(type, human=true)
     @type  = type
     @human = human
-    @color = color
   end
 
 
   def is_x?
     true if @type == 'X'
+  end
+
+  def is_y?
+    true if @type == "Y"
   end
 end

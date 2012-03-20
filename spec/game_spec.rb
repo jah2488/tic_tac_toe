@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Game do
+ 
   let(:game1) do
     Game.new(1)
   end

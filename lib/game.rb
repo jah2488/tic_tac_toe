@@ -1,6 +1,9 @@
+require_relative 'player'
+require_relative 'board'
+require_relative 'ai'
 
 class Game 
-  attr_accessor :current_player, :player_1, :player_2, :x, :y, :turn, :chrome, :board
+  attr_accessor :current_player, :player_1, :player_2, :x, :y, :turn, :board
 
   $game = true
 
@@ -11,8 +14,8 @@ class Game
     'rank' => lambda { print "#{Ai.show_rank}\n" }
   }
 
-  def initialize(gameType=1)
-    case gameType
+  def initialize(game_type=1)
+    case game_type
     when 1
       p1 = true
       p2 = false
@@ -39,7 +42,7 @@ class Game
   def get_move(player)
     if player.human
       move = parse_input 
-      if @board.valid_move?(move)
+      if @board.move_available?(move)
         @board.player_move(move,player.type)
         draw(@board)
       else
@@ -70,7 +73,7 @@ class Game
   end
 
   def parse_input
-    input = Readline.readline("[ #{@current_player.type.upcase} , Its Your Move]: ", true) 
+    input = Readline.readline(" 1 | 2 | 3\n------------\n 4 | 5 | 6\n-----------\n 7 | 8 | 9 \n[ #{@current_player.type.upcase} , Its Your Move]: ", true) 
     if ACTIONS[input]
       begin
         draw(board)
