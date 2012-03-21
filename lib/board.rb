@@ -1,5 +1,5 @@
 class Board 
-  
+
   attr_accessor :board, :rows, :cols, :available_moves, :current_player
 
   def initialize

@@ -1,17 +1,10 @@
 require_relative 'player'
+require_relative 'input'
 require_relative 'board'
 require_relative 'ai'
 
 class Game 
-  attr_accessor :current_player, :player_1, :player_2, :x, :y, :turn, :board
-
-  $game = true
-
-  ACTIONS = {
-    'exit' => lambda { system('clear'); puts "Thanks for playing!"; exit(0)},
-    'quit' => lambda { system('clear'); puts "Thanks for playing!"; exit(0)},
-    'help' => lambda { puts " 1 | 2 | 3\n-----------\n 4 | 5 | 6\n-----------\n 7 | 8 | 9\n\n"}
-  }
+  attr_accessor :current_player, :player_1, :player_2, :x, :y, :turn, :board, :game
 
   def initialize(game_type=1)
     case game_type
@@ -30,31 +23,32 @@ class Game
     @board    = Board.new
     @current_player = @player_1
     @board.current_player = @current_player
+    @game  = true
+    @input = Input.new
   end
 
-  def draw(board)
+  def draw
     system('clear')
-    board.update
+    @board.update
+    print "[ #{@current_player.type.upcase} , Its Your Move]"
   end
 
   def get_move(player)
     if player.human
-      move = parse_input 
+      move = @input.parse_input 
       if @board.move_available?(move)
         @board.player_move(move,player.type)
-        draw(@board)
       else
-        draw(@board)
+        puts "Not An Available".red
         get_move(player)
       end
     else
-      sleep(0.5)
+      sleep(0.5) unless @player_1.human #slow things down while watching the Ai vs Ai
       Ai.make_move(@board, player)
-      draw(@board)
     end
+
     if @board.player_win?
-      draw(@board)
-      $game = false
+      @game = false
     else
       switch_player
     end
@@ -70,48 +64,29 @@ class Game
     end
   end
 
-  def parse_input
-    input = Readline.readline("[ #{@current_player.type.upcase} , Its Your Move]: ", true) 
-    if ACTIONS[input]
-      begin
-        draw(board)
-        ACTIONS[input].call
-        get_move(@current_player)
-      rescue StandardError => e
-        $stderr.puts e.to_s.red
-      end
-    else
-      input
-    end
-  end
-
   # Main Loop
   def start
-    while $game do
+    while @game do
       winner if @board.player_win?
-      draw(@board)
-        get_move(@current_player)
+      draw
+      get_move(@current_player)
       stalemate if @board.available_moves == 0
     end
     winner
   end
 
   def winner
-    draw(@board)
-    puts "\n#{@current_player.type} Wins!"
-    puts "press enter to quit"
-    gets
-    system('clear')
-    exit(0)
+    draw
+    puts "\n#{@current_player.type} Wins!".magenta
+    puts "Would you like to play again? (Y)es | (N)o"
+    @input.game_over
   end
 
   def stalemate
-    draw(@board)
-    puts "\nSTALEMATE!"
-    puts "press enter to quit"
-    gets
-    system('clear')
-    exit(0)
+    draw
+    puts "\nSTALEMATE!".green
+    puts "Would you like to play again? (Y)es | (N)o"
+    @input.game_over
   end
 
 end

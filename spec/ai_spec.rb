@@ -116,13 +116,15 @@ describe Ai do
         board.board[2][2].should == 'O'
       end
     
-      it "shoudl go to opposite corner of other player" do
+      it "should go to opposite corner of other player" do
         board.player_move('9','X')
         board.player_move('5','X')
         Ai.make_move(board,player_o)
         board.board[0][0].should == 'O'
       end
     end
+
+    
 
     
   end
