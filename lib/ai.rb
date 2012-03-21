@@ -7,20 +7,15 @@ class Ai
     @types      = ["X","O"]
     @type       = player.type
     @opponent   = (@type == @types[0]) ? @types[1] : @types[0]
-    @rank_board = [[3,2,3], #default placement priority
-                   [2,5,2],
-                   [3,2,3]]
+    @rank_board = [[3,3,3], #default placement priority
+                   [3,5,3],
+                   [3,3,3]]
     @cols  = []
     @rows  = []
     @ltr   = []
     @rtl   = []
     move   = rank_tiles
     board.player_move(move, player.type)
-  end
-
-  def self.show_rank
-    rank_tiles
-    return @rank_board
   end
   
   private 
@@ -33,7 +28,17 @@ class Ai
     return destroy_human
   end
 
-
+  def self.add_existing_moves
+    3.times do |row|
+      3.times do |col|
+        @rank_board[row][col] = 0 if @play_board[row][col] != " "
+      end
+      @rows << @play_board[row]
+      @ltr  << @play_board[row][row]
+      @rtl  << @play_board[2-row][row]
+    end
+    @cols = @rows.transpose
+  end
 
   def self.destroy_human
     max = @rank_board.flatten.sort.last
@@ -47,34 +52,33 @@ class Ai
     if move.length > 2 #if more than one option present
       moves = []
       move.each_slice(2) {|n| moves << n}
-      move = moves.shuffle.first
+      move = moves.shuffle.first #shuffle and pick first cell
     end
     return move
   end
 
   def self.react_to_player #Add points to corners or sides depending on player
-    if     @play_board[0][0] == @opponent and @play_board[2][2] == " "
+    if @play_board[0][0] == @opponent and @play_board[2][2] == " "
       @rank_board[2][2] += 1
-    elsif  @play_board[0][2] == @opponent and @play_board[2][0] == " "
+    elsif @play_board[0][2] == @opponent and @play_board[2][0] == " "
       @rank_board[2][0] += 1
-    elsif  @play_board[2][0] == @opponent and @play_board[0][2] == " "
+    elsif @play_board[2][0] == @opponent and @play_board[0][2] == " "
       @rank_board[0][2] += 1
     elsif  @play_board[2][2] == @opponent and @play_board[0][0] == " "
       @rank_board[0][0] += 1
     end
-    if     @play_board[0][0] == @opponent and @play_board[2][0] == @opponent and @play_board[1][0] == " "
+    if @play_board[0][0] == @opponent and @play_board[2][0] == @opponent and @play_board[1][0] == " "
       @rank_board[1][0] += 50
-    elsif  @play_board[2][0] == @opponent and @play_board[2][2] == @opponent and @play_board[2][1] == " "
+    elsif @play_board[2][0] == @opponent and @play_board[2][2] == @opponent and @play_board[2][1] == " "
       @rank_board[2][1] += 50
-    elsif  @play_board[2][2] == @opponent and @play_board[0][2] == @opponent and @play_board[1][2] == " "
+    elsif @play_board[2][2] == @opponent and @play_board[0][2] == @opponent and @play_board[1][2] == " "
       @rank_board[1][2] += 50
-    elsif  @play_board[0][0] == @opponent and @play_board[0][2] == @opponent and @play_board[0][1] == " "
+    elsif @play_board[0][0] == @opponent and @play_board[0][2] == @opponent and @play_board[0][1] == " "
       @rank_board[0][1] += 50
     end
   end
 
-  def self.check_win_or_block(type,amount)
-    
+  def self.check_win_or_block(type, amount)
     update_rows(type,amount)
     update_cols(type,amount)
     result = @ltr.select { |cell| cell.include? type }
@@ -90,7 +94,8 @@ class Ai
       end
     end
   end
-  def self.update_rows(type,amount)
+
+  def self.update_rows(type, amount)
     3.times do |i|
       result = @rows[i].select { |cell| cell.include? type}
       if result.length == 2
@@ -104,7 +109,8 @@ class Ai
       end
     end
   end
-  def self.update_cols(type,amount)
+  
+  def self.update_cols(type, amount)
     3.times do |i|
       result = @cols[i].select { |cell| cell.include? type}
       if result.length == 2
@@ -120,15 +126,5 @@ class Ai
       end
     end
   end
-  def self.add_existing_moves
-    3.times do |row|
-      3.times do |col|
-        @rank_board[row][col] = 0 if @play_board[row][col] != " "
-      end
-      @rows << @play_board[row]
-      @ltr  << @play_board[row][row]
-      @rtl  << @play_board[2-row][row]
-    end
-    @cols = @rows.transpose
-  end
+
 end

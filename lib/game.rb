@@ -10,8 +10,7 @@ class Game
   ACTIONS = {
     'exit' => lambda { system('clear'); puts "Thanks for playing!"; exit(0)},
     'quit' => lambda { system('clear'); puts "Thanks for playing!"; exit(0)},
-    'help' => lambda { puts " 1 | 2 | 3\n-----------\n 4 | 5 | 6\n-----------\n 7 | 8 | 9\n\n"},
-    'rank' => lambda { print "#{Ai.show_rank}\n" }
+    'help' => lambda { puts " 1 | 2 | 3\n-----------\n 4 | 5 | 6\n-----------\n 7 | 8 | 9\n\n"}
   }
 
   def initialize(game_type=1)
@@ -31,7 +30,6 @@ class Game
     @board    = Board.new
     @current_player = @player_1
     @board.current_player = @current_player
-    main_loop
   end
 
   def draw(board)
@@ -58,12 +56,12 @@ class Game
       draw(@board)
       $game = false
     else
-      switch_player(player)
+      switch_player
     end
   end
 
-  def switch_player(current)
-    if current == @player_1
+  def switch_player
+    if @current_player == @player_1
       @current_player = @player_2
       @board.current_player = @player_2
     else
@@ -73,7 +71,7 @@ class Game
   end
 
   def parse_input
-    input = Readline.readline(" 1 | 2 | 3\n------------\n 4 | 5 | 6\n-----------\n 7 | 8 | 9 \n[ #{@current_player.type.upcase} , Its Your Move]: ", true) 
+    input = Readline.readline("[ #{@current_player.type.upcase} , Its Your Move]: ", true) 
     if ACTIONS[input]
       begin
         draw(board)
@@ -87,7 +85,8 @@ class Game
     end
   end
 
-  def main_loop
+  # Main Loop
+  def start
     while $game do
       winner if @board.player_win?
       draw(@board)
