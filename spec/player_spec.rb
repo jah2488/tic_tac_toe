@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Player do
+describe TicTacRuby::Player do
   
   let(:player) do
-    Player.new('X', true)
+    TicTacRuby::Player.new('X', true)
   end
 
   context "Player 1 is X and is human" do

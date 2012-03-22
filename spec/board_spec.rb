@@ -1,22 +1,30 @@
 require 'spec_helper'
 
-describe Board do
+describe TicTacRuby::Board do
 
   context "should validate win conditions accurately" do
 
     let(:player1) do
-      Player.new("X",true)
+      TicTacRuby::Player.new("X",true)
     end
     let(:player2) do
-      Player.new("O",true)
+      TicTacRuby::Player.new("O",true)
     end
     let(:board) do
-      Board.new
+      TicTacRuby::Board.new
     end
     before(:each) do
       board.current_player = player1
     end
 
+    it "should allow for simultaneous boards" do 
+      temp_board = TicTacRuby::Board.new()
+      temp_board.player_move('2','X')
+      temp_board2 = TicTacRuby::Board.new(temp_board.board.dup)
+      temp_board.player_move('5','O')
+      binding.pry
+      board.get_cell_value('2').should == ' '
+    end
     it "should allow player X to win horizontally" do
       3.times do |i|
         board.board[i] = ["X","X","X"]
@@ -24,6 +32,10 @@ describe Board do
       end
     end
 
+    it "should not allow mixed players to call a false win" do
+        board.board[0] = ["X","O","X"]
+        board.player_win?.should == false
+    end
     it "should allow player O to win horizontally" do
       board.current_player = player2
       3.times do |i|
@@ -71,6 +83,26 @@ describe Board do
         board.board[2-i][i] = board.current_player.type
       end
         board.player_win?.should == true
+    end
+
+    context ".game_over?" do
+      it "should return true if game has winner" do
+        board.player_move("1", player1.type)
+        board.player_move("4", player1.type)
+        board.player_move("7", player1.type)
+        board.game_over?.should == true
+      end
+      it "should return true if available_moves is less than 1" do
+        board.available_moves = 0
+        board.game_over?.should == true
+      end
+      it "should return false if no winner" do
+        board.game_over?.should == false
+      end
+      it "should return false if available_moves is greater than 1" do
+        board.available_moves = 3
+        board.game_over?.should == false
+      end
     end
 
     context ".get_cell_value" do

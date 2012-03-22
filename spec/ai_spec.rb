@@ -1,15 +1,18 @@
 require 'spec_helper'
 
-describe Ai do
+describe TicTacRuby::Ai do
 
+  let(:ai) do
+    TicTacRuby::Ai
+  end
   let(:player_x) do
-    Player.new('X',false)
+    TicTacRuby::Player.new('X',false)
   end
   let(:player_o) do
-    Player.new('O',false)
+    TicTacRuby::Player.new('O',false)
   end
   let(:board) do
-    Board.new
+    TicTacRuby::Board.new
   end
 
   context "Should know the rules" do
@@ -19,36 +22,31 @@ describe Ai do
       it "should take all winning moves horizontally" do
         board.player_move('1','O')
         board.player_move('2','O')
-        Ai.make_move(board,player_o)
-        board.board[0][2].should == 'O'
+        ai.make_move(board,player_o).should == [0, 2]
       end
       
       it "should take all winning moves vertically" do
         board.player_move('1','O')
         board.player_move('4','O')
-        Ai.make_move(board,player_o)
-        board.board[2][0].should == 'O'
+        ai.make_move(board,player_o).should == [2, 0]
       end
       
       it "... even upsidedown" do
         board.player_move('8', 'O')
         board.player_move('5', 'O')
-        Ai.make_move(board,player_o)
-        board.board[0][1].should == 'O'
+        ai.make_move(board,player_o).should == [0, 1]
       end
 
       it "should take all winning moves left-to-right" do
         board.player_move('1','X')
         board.player_move('5','X')
-        Ai.make_move(board,player_x)
-        board.board[2][2].should == 'X'
+        ai.make_move(board,player_x).should == [2, 2]
       end
 
       it "should take all winning moves right-to-left" do
         board.player_move('3','O')
         board.player_move('5','O')
-        Ai.make_move(board,player_o)
-        board.board[2][0].should == 'O'
+        ai.make_move(board,player_o).should == [2, 0]
       end
 
       it "should take winning move even if other moves are open horizontally" do
@@ -56,8 +54,7 @@ describe Ai do
         board.player_move('2','X')
         board.player_move('4','O')
         board.player_move('5','O')
-        Ai.make_move(board,player_o)
-        board.board[1][2].should == 'O'
+        ai.make_move(board,player_o).should == [1, 2]
       end
 
       it "should take winning move even if other moves are open vertically" do
@@ -65,8 +62,7 @@ describe Ai do
         board.player_move('4','X')
         board.player_move('2','O')
         board.player_move('5','O')
-        Ai.make_move(board,player_o)
-        board.board[2][1].should == 'O'
+        ai.make_move(board,player_o).should == [2, 1]
       end
     end
 
@@ -75,36 +71,31 @@ describe Ai do
       it "should block player horizontally" do
         board.player_move('1','X')
         board.player_move('2','X')
-        Ai.make_move(board,player_o)
-        board.board[0][2].should == 'O'
+        ai.make_move(board,player_o).should == [0,2]
       end
 
       it "should block player vertically" do
         board.player_move('1','X')
         board.player_move('4','X')
-        Ai.make_move(board,player_o)
-        board.board[2][0].should == 'O'
+        ai.make_move(board,player_o).should == [2, 0]
       end
 
       it "should block player left-to-right" do
         board.player_move('1','X')
         board.player_move('5','X')
-        Ai.make_move(board,player_o)
-        board.board[2][2].should == 'O'
+        ai.make_move(board,player_o).should == [2, 2]
       end
 
       it "should block player right-to-left" do
         board.player_move('3','X')
         board.player_move('5','X')
-        Ai.make_move(board,player_o)
-        board.board[2][0].should == 'O'
+        ai.make_move(board,player_o).should == [2, 0]
       end
     end
 
     context "Rule 3: Play the center" do
       it "should go to center if board is open" do
-        Ai.make_move(board,player_x)
-        board.board[1][1].should == 'X'
+        ai.make_move(board,player_x).should == [1, 1]
       end
     end
     
@@ -112,20 +103,15 @@ describe Ai do
       it "should go to opposite corner of other player" do
         board.player_move('1','X')
         board.player_move('5','X')
-        Ai.make_move(board,player_o)
-        board.board[2][2].should == 'O'
+        ai.make_move(board,player_o).should == [2, 2]
       end
     
       it "should go to opposite corner of other player" do
         board.player_move('9','X')
         board.player_move('5','X')
-        Ai.make_move(board,player_o)
-        board.board[0][0].should == 'O'
+        ai.make_move(board,player_o).should == [0, 0]
       end
     end
-
-    
-
     
   end
 

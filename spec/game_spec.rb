@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe Game do
+describe TicTacRuby::Game do
  
   let(:game1) do
-    Game.new(1)
+    TicTacRuby::Game.new(1)
   end
   let(:game2) do
-    Game.new(2)
+    TicTacRuby::Game.new(2)
   end
   let(:game3) do
-    Game.new(3)
+    TicTacRuby::Game.new(3)
   end
 
   context "Initializes game types properly." do

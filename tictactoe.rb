@@ -3,13 +3,11 @@ require 'rubygems'
 require 'pry'
 require 'readline'
 require 'colored'
-require_relative 'lib/game'
-require_relative 'lib/menu'
-
+require_relative "lib/tic_tac_ruby"
 
 class Tictactoe
   def initialize
-    Menu.new
+    TicTacRuby::Menu.new
   end
 end
 
