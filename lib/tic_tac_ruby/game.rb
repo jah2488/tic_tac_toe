@@ -14,6 +14,7 @@ module TicTacRuby
       when 3 # 0 player
         p1 = false
         p2 = false
+        @cpu = Ai
       when 4 # 1 player - negamax
         p1 = true
         p2 = false
@@ -45,15 +46,12 @@ module TicTacRuby
           get_move(player)
         end
       else
-        sleep(0.5) unless @player_1.human #slow things down while watching the Ai vs Ai
+        delay
         move = @cpu.make_move(@board, player)
-        binding.pry
-        if @board.move_available?(move)
-          @board.player_move(move, player.type)
-        end
+        @board.player_move(move, player.type) if @board.move_available?(move)
       end
 
-      if @board.player_win?
+      if @board.game_over?
         @game = false
       else
         switch_player
@@ -73,12 +71,16 @@ module TicTacRuby
     # Main Loop
     def start
       while @game do
-        winner if @board.player_win?
+        winner if @board.player_win?(@current_player)
         draw
         get_move(@current_player)
         stalemate if @board.available_moves == 0
       end
       winner
+    end
+
+    def delay
+      sleep(0.5) unless player_2.human
     end
 
     def winner

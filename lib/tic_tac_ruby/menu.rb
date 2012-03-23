@@ -7,12 +7,22 @@ module TicTacRuby
     # an engine class and move this into the game class as startup.
 
     def initialize
-      menu = <<-MENU 
+      line1 = "    Its The Classic Game of Tic Tac Toe.                                                                                                                           Keys Top      ( 1 | 2 | 3 )            "
+      line2 = "                                        INSTRUCTIONS:  Use the numbers to select a space. Press Enter to make your move.                                           Keys Middle   ( 4 | 5 | 6 )            "
+      line3 = "                                                                                                                         OBJECTIVE: Try to score 3 in a row.       Keys Bottom   ( 7 | 8 | 9 )            "          
+      i = 0
+      j = 34
+
+      loop do |o|
+        while i < (line1.length - 35) do
+          i += 1
+          j += 1
+          menu = <<-MENU 
         #####################################
         ##                                 ##
         ##                                 ##
-        ##           TIC TAC TOE           ##
-        ##             in ruby             ##
+        ##            TIC TAC TOE          ##
+        ##              in ruby            ##
         ##                                 ##
         ##                                 ##
         ##                                 ##
@@ -26,13 +36,14 @@ module TicTacRuby
         ##                                 ##
         ##              by justinherrick   ##
         #####################################
+        #{'#'.green}#{line1[i..j].magenta}#{'#'.green}
+        #{'#'.green}#{line2[i..j].magenta}#{'#'.green}
+        #{'#'.green}#{line3[i..j].magenta}#{'#'.green}
         MENU
-
-      system('clear')
-      puts menu.green
-
-      loop do
-
+          system('clear')
+          puts menu.green
+          sleep(0.119)
+        end
         input = Readline.readline("[input]: ".magenta, true)
         case input
         when "1"
