@@ -28,6 +28,7 @@ module TicTacRuby
 
     def game_over
       loop do
+        puts "Would you like to play again? (Y)es | (N)o"
         input = Readline.readline("> ", true)
         case input.downcase
         when "y", "yes" then Menu.new

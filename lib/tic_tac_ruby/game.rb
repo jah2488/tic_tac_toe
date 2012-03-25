@@ -42,7 +42,7 @@ module TicTacRuby
         if @board.move_available?(move)
           @board.player_move(move, player.type)
         else
-          puts "Not An Available".red
+          puts "Invalid Move".red
           get_move(player)
         end
       else
@@ -86,14 +86,12 @@ module TicTacRuby
     def winner
       draw
       puts "\n#{@current_player.type} Wins!".magenta
-      puts "Would you like to play again? (Y)es | (N)o"
       @input.game_over
     end
 
     def stalemate
       draw
       puts "\nSTALEMATE!".green
-      puts "Would you like to play again? (Y)es | (N)o"
       @input.game_over
     end
 
