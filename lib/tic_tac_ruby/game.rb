@@ -1,6 +1,6 @@
 module TicTacRuby
   class Game 
-    attr_accessor :current_player, :player_1, :player_2, :x, :y, :turn, :board, :game
+    attr_accessor :current_player, :player_1, :player_2, :x, :y, :turn, :board, :game, :cpu
 
     def initialize(game_type=1)
       case game_type
@@ -33,7 +33,7 @@ module TicTacRuby
     def draw
       system('clear')
       @board.update
-      print "[ #{@current_player.type.upcase} , Its Your Move]"
+      print "[ #{@current_player.type.upcase} , Its Your Move. (Type 'help')]"
     end
 
     def get_move(player)

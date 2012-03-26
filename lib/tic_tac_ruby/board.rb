@@ -1,8 +1,8 @@
 module TicTacRuby
   class Board 
 
-    attr_reader :board, :rows, :cols, :cells
-    attr_accessor :available_moves, :current_player
+    attr_reader   :board, :rows, :cols, :cells
+    attr_accessor :current_player, :available_moves
 
     def initialize(board = nil)
       @rows  = 3
@@ -92,6 +92,21 @@ module TicTacRuby
       end
     end
 
+    def update
+      puts ""
+      @board.each_with_index do |row, i|
+        row_print = row.collect{ |s| s }.join(" | ")
+        puts row_print
+        row_trim = "-" * row_print.length
+        puts row_trim if @board.length != (i + 1)
+      end
+      puts ""
+    end
+
+    # Methods used to check win condition by looping through the board arrays.
+    # Alternative method would be to hard code all possible winning conditions
+    # and then check if any of those are matched by current board.
+    
     def horizontal_score?(player)
       val = []
       result = false
@@ -141,17 +156,6 @@ module TicTacRuby
         result = false
       end
       return result
-    end
-
-    def update
-      puts ""
-      @board.each_with_index do |row, i|
-        row_print = row.collect{ |s| s }.join(" | ")
-        puts row_print
-        row_trim = "-" * row_print.length
-        puts row_trim if @board.length != (i + 1)
-      end
-      puts ""
     end
 
   end
