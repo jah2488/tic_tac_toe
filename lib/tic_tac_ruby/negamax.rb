@@ -23,10 +23,10 @@ module TicTacRuby
     end
 
     def negamax(board, player, depth)
-      if board.available_moves >= 8
-        #Skip running negamax on first move and instead pick one of the best "starting moves"
-        [5,1,3,7,9].reverse.map { |move| @best_move = move if board.move_available?("#{move}") }
-      else
+#      if board.available_moves >= 8
+#        #Skip running negamax on first move and instead pick one of the best "starting moves"
+#        [5,1,3,7,9].reverse.map { |move| @best_move = move if board.move_available?("#{move}") }
+#      else
         if board.game_over?
           return check_winner(board, player)
         else
@@ -46,8 +46,8 @@ module TicTacRuby
           end
           return best_rank
         end
-      end
+#      end
     end
-  
+
   end
 end

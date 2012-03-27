@@ -22,6 +22,30 @@ describe TicTacRuby::Negamax do
     TicTacRuby::Negamax.new
   end
 
+  it "should win against a given move set 2,6,3,9" do
+    player.type = o
+    board.player_move('2', 'X')
+    board.player_move(negamax.make_move(board,player), 'O')
+    board.player_move('6', 'X')
+    board.player_move(negamax.make_move(board,player), 'O')
+    board.player_move('3', 'X')
+    board.player_move(negamax.make_move(board,player), 'O')
+    board.game_over?.should == true
+  end
+
+  it "should win against a given move set 2,6,9,8,7" do
+    player.type = o
+    board.player_move('2', 'X')
+    board.player_move(negamax.make_move(board,player), 'O')
+    board.player_move('6', 'X')
+    board.player_move(negamax.make_move(board,player), 'O')
+    board.player_move('9', 'X')
+    board.player_move(negamax.make_move(board,player), 'O')
+    board.player_move('8', 'X')
+    board.player_move(negamax.make_move(board,player), 'O')
+    board.move_available?('7').should == false
+  end
+
   it "should make final winning move as x" do
     board.player_move("1", o)
     board.player_move("2", x)

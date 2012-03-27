@@ -8,24 +8,24 @@ module TicTacRuby
       @types      = ["X","O"]
       @type       = player.type
       @opponent   = (@type == @types[0]) ? @types[1] : @types[0]
-      @rank_board = [[3,3,3], #default placement priority
+      @rank_board = [[4,3,4], #default placement priority
                      [3,5,3],
-                     [3,3,3]]
+                     [4,3,4]]
       @cols  = []
       @rows  = []
       @ltr   = []
       @rtl   = []
       return rank_tiles
     end
-    
-    private 
+
+    private
 
     def self.rank_tiles
       add_existing_moves
       check_win_or_block(@type,100) #win
       check_win_or_block(@opponent, 50) #block
       react_to_player
-      return destroy_human
+      return pick_move
     end
 
     def self.add_existing_moves
@@ -40,19 +40,20 @@ module TicTacRuby
       @cols = @rows.transpose
     end
 
-    def self.destroy_human
+    def self.pick_move
       max = @rank_board.flatten.sort.last
       move = []
       @rank_board.each do |row|
         if row.index(max)
           move << @rank_board.index(row)
-          move << row.index(max) 
+          move << row.index(max)
         end
       end
       if move.length > 2 #if more than one option present
-        moves = []
-        move.each_slice(2) {|n| moves << n}
-        move = moves.shuffle.first #shuffle and pick first cell
+        move = move[0..1]
+        # moves = []
+        # move.each_slice(2) {|n| moves << n}
+        # move = moves.shuffle.first #shuffle and pick first cell
       end
       return move
     end

@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 require 'rubygems'
-require 'pry'
 require 'readline'
-require 'colored'
+require 'bundler/setup'
+Bundler.require(:default)
+
 require_relative "lib/tic_tac_ruby"
 
 class Tictactoe

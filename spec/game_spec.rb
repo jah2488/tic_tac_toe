@@ -19,7 +19,7 @@ describe TicTacRuby::Game do
   context "Initializes game types properly." do
 
     context "When Game Type 1 is selected" do
-      
+
       it "Should set the game with player 1 to human" do
         game1.player_1.human.should equal true
       end
@@ -28,13 +28,13 @@ describe TicTacRuby::Game do
         game1.player_2.human.should equal false
       end
 
-      it "Should set the CPU to Ai" do
-        game1.cpu.should equal TicTacRuby::Ai
+      it "Should set the CPU to Negamax" do
+        game1.cpu.should be_an_instance_of TicTacRuby::Negamax
       end
     end
 
     context "When Game Type 2 is selected" do
-      
+
       it "Should set the game with player 1 to human" do
         game2.player_1.human.should equal true
       end
@@ -46,7 +46,7 @@ describe TicTacRuby::Game do
     end
 
     context "When Game Type 3 is selected" do
-      
+
       it "Should set the game with player 1 to not human" do
         game3.player_1.human.should equal false
       end
@@ -68,8 +68,16 @@ describe TicTacRuby::Game do
       end
 
       it "Should set the cpu to negamax" do
-        game4.cpu.should be_an_instance_of TicTacRuby::Negamax
+        game4.cpu.should equal TicTacRuby::Ai
       end
+    end
+
+    context "When illegal game type is selected" do
+
+      it "should raise an error" do
+        lambda { TicTacRuby::Game.new(5)}.should raise_error 
+      end
+
     end
   end
 

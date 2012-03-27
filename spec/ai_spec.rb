@@ -112,7 +112,36 @@ describe TicTacRuby::Ai do
         ai.make_move(board,player_o).should == [0, 0]
       end
     end
-    
+  end
+
+  context "when given a set of moves" do
+    it "should not be beaten by 2,6,3,9" do
+      board.player_move('2', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.player_move('6', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.player_move('3', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.move_available?('9').should == false
+    end
+    it "should not be beaten by 6,8,9,7" do
+      board.player_move('6', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.player_move('8', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.player_move('9', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.move_available?('7').should == false
+    end
+    it "should not be beaten by 8,4,7,1" do
+      board.player_move('8', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.player_move('4', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.player_move('7', 'X')
+      board.player_move(ai.make_move(board,player_o), 'O')
+      board.move_available?('1').should == false
+    end
   end
 
 end

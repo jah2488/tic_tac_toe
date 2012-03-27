@@ -1,13 +1,13 @@
 module TicTacRuby
-  class Game 
-    attr_accessor :current_player, :player_1, :player_2, :x, :y, :turn, :board, :game, :cpu
+  class Game
+    attr_accessor :current_player, :player_1, :player_2, :board, :cpu
 
     def initialize(game_type=1)
       case game_type
-      when 1 # 1 player - 'mark-sweep-zero-depth-rank-heuristic'
+      when 1 # 1 player - negamax
         p1 = true
         p2 = false
-        @cpu = Ai
+        @cpu = Negamax.new
       when 2 # 2 player
         p1 = true
         p2 = true
@@ -15,47 +15,42 @@ module TicTacRuby
         p1 = false
         p2 = false
         @cpu = Ai
-      when 4 # 1 player - negamax
+      when 4 # 1 player
         p1 = true
         p2 = false
-        @cpu = Negamax.new
+        @cpu = Ai
+      else
+        raise "Illegal Game Type"
       end
       @player_1 = Player.new('X', p1)
       @player_2 = Player.new('O', p2)
       @board    = Board.new
       @current_player = @player_1
       @board.current_player = @current_player
-      @game  = true
-      @input = Input.new
-
+      @io = InputOutput.new(": ")
     end
 
     def draw
       system('clear')
       @board.update
-      print "[ #{@current_player.type.upcase} , Its Your Move. (Type 'help')]"
     end
 
     def get_move(player)
-      if player.human
-        move = @input.parse_input 
-        if @board.move_available?(move)
-          @board.player_move(move, player.type)
-        else
-          puts "Invalid Move".red
-          get_move(player)
-        end
+      @io.pout "[ #{@current_player.type.upcase} , Its Your Move. (Type 'help')]"
+      move = @io.parse_input
+      if @board.move_available?(move)
+        @board.player_move(move, player.type)
       else
-        delay
-        move = @cpu.make_move(@board, player)
-        @board.player_move(move, player.type) if @board.move_available?(move)
+        @io.out "Move not available".red
+        get_move(player)
       end
+    end
 
-      if @board.game_over?
-        @game = false
-      else
-        switch_player
-      end
+    def cpu_move(player)
+      @io.pout "[ #{@current_player.type.upcase} , Is contemplating their move...]"
+      delay
+      move = @cpu.make_move(@board, player)
+      @board.player_move(move, player.type) if @board.move_available?(move)
     end
 
     def switch_player
@@ -70,13 +65,16 @@ module TicTacRuby
 
     # Main Loop
     def start
-      while @game do
-        winner if @board.player_win?(@current_player)
+      loop do
         draw
-        get_move(@current_player)
-        stalemate if @board.available_moves == 0
+        @current_player.human ? get_move(@current_player) : cpu_move(@current_player)
+        game_over if @board.game_over?
+        switch_player
       end
-      winner
+    end
+
+    def game_over
+      @board.player_win?(@current_player.type) ? winner : stalemate
     end
 
     def delay
@@ -85,14 +83,12 @@ module TicTacRuby
 
     def winner
       draw
-      puts "\n#{@current_player.type} Wins!".magenta
-      @input.game_over
+      @io.game_over("\n#{@current_player.type} Wins!")
     end
 
     def stalemate
       draw
-      puts "\nSTALEMATE!".green
-      @input.game_over
+      @io.game_over("\nSTALEMATE!")
     end
 
   end
