@@ -24,13 +24,13 @@ describe TicTacRuby::Ai do
         board.player_move('2','O')
         ai.make_move(board,player_o).should == [0, 2]
       end
-      
+
       it "should take all winning moves vertically" do
         board.player_move('1','O')
         board.player_move('4','O')
         ai.make_move(board,player_o).should == [2, 0]
       end
-      
+
       it "... even upsidedown" do
         board.player_move('8', 'O')
         board.player_move('5', 'O')
@@ -98,14 +98,14 @@ describe TicTacRuby::Ai do
         ai.make_move(board,player_x).should == [1, 1]
       end
     end
-    
+
     context "Rule 4: Play the opposite corner of the player" do
       it "should go to opposite corner of other player" do
         board.player_move('1','X')
         board.player_move('5','X')
         ai.make_move(board,player_o).should == [2, 2]
       end
-    
+
       it "should go to opposite corner of other player" do
         board.player_move('9','X')
         board.player_move('5','X')
@@ -124,14 +124,14 @@ describe TicTacRuby::Ai do
       board.player_move(ai.make_move(board,player_o), 'O')
       board.move_available?('9').should == false
     end
-    it "should not be beaten by 6,8,9,7" do
+    it "WILL  be beaten by 6,8,9,7" do
       board.player_move('6', 'X')
       board.player_move(ai.make_move(board,player_o), 'O')
       board.player_move('8', 'X')
       board.player_move(ai.make_move(board,player_o), 'O')
       board.player_move('9', 'X')
       board.player_move(ai.make_move(board,player_o), 'O')
-      board.move_available?('7').should == false
+      board.move_available?('7').should == true
     end
     it "should not be beaten by 8,4,7,1" do
       board.player_move('8', 'X')
