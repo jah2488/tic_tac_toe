@@ -25,7 +25,7 @@ module TicTacRuby
         ##        1) Human vs Negamax      ##
         ##        2) Human vs Human        ##
         ##        3) AI    vs AI           ##
-        ##        4) Human vs weak AI      ##
+        ##        4) Human vs Weak AI      ##
         ##        5) Help                  ##
         ##        6) Quit or Exit          ##
         ##                                 ##

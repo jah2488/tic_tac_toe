@@ -8,7 +8,8 @@ require_relative "lib/tic_tac_ruby"
 
 class Tictactoe
   def initialize
-    TicTacRuby::Menu.new
+    game = TicTacRuby::Menu.new
+    game.start
   end
 end
 
