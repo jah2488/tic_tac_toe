@@ -49,11 +49,8 @@ module TicTacRuby
           move << row.index(max)
         end
       end
-      if move.length > 2 #if more than one option present
+      if move.length > 2 #if more than one option present, pick the first
         move = move[0..1]
-        # moves = []
-        # move.each_slice(2) {|n| moves << n}
-        # move = moves.shuffle.first #shuffle and pick first cell
       end
       return move
     end
