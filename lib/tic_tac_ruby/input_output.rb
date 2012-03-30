@@ -46,11 +46,11 @@ module TicTacRuby
       out message.green
       loop do
         out "Would you like to play again? (#{'Y'.green})es | (#{'N'.red})o"
-        input = parse_input
-        case input.downcase
-        when "y", "yes"
+        input = parse_input.downcase
+        case 
+        when input.match(/yes/)
           Menu.new
-        when "n", "no"
+        when input.match(/no/)
           quit_game
         else
           out "Invalid Input. Try again.".red
